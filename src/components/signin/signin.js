@@ -1,19 +1,34 @@
 import React, { Component } from "react";
 import FormInput from "../formInput/formInput";
 import Button from "../buttons/buttons";
-import { signInWithGoogle } from "../../firebase/firebase.utils";
+import { auth, signInWithGoogle } from "../../firebase/firebase.utils";
 import "./signin.styles.scss";
 class Signin extends Component {
   state = {
     email: "",
-    password: ""
+    password: "",
+    error: null
   };
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
+    const { email, password } = this.state;
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+
+      this.setState({
+        email: "",
+        password: ""
+      });
+    } catch (err) {
+      this.setState({ error: "No user found!" });
+    }
   };
 
   handleChange = e => {
+    this.setState({
+      error: null
+    });
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -22,7 +37,7 @@ class Signin extends Component {
   render() {
     return (
       <div className="sign-in">
-        <h2>I already have an account</h2>
+        <h2 className="title">I already have an account</h2>
         <span>Sign in with your email and password</span>
         <form onSubmit={this.handleSubmit}>
           <FormInput
@@ -42,6 +57,7 @@ class Signin extends Component {
             label="Password"
             required
           />
+          {this.state.error && <div className="error">{this.state.error}</div>}
           <div className="buttons">
             <Button type="submit"> Sign In </Button>
             <Button onClick={signInWithGoogle} isGoogleSignIn>
