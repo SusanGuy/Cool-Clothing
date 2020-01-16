@@ -21,7 +21,8 @@ class Signin extends Component {
         password: ""
       });
     } catch (err) {
-      this.setState({ error: "No user found!" });
+      console.log(err.message);
+      this.setState({ error: err.message });
     }
   };
 
