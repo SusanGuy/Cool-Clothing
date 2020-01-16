@@ -3,8 +3,11 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { auth } from "../../firebase/firebase.utils";
 import { ReactComponent as Logo } from "../../assets/crown.svg";
+import ShoppingIcon from "../cart-icon/cartIcon";
+import CartDropDown from "../cart/cartDropdown";
+
 import "./navigation.scss";
-const navigation = ({ currentUser }) => {
+const navigation = ({ currentUser, hidden, toggleCart }) => {
   return (
     <div className="header">
       <Link className="logo-container" to="/">
@@ -26,14 +29,18 @@ const navigation = ({ currentUser }) => {
             SIGN IN
           </Link>
         )}
+
+        <ShoppingIcon />
       </div>
+      {!hidden ? <CartDropDown /> : null}
     </div>
   );
 };
 
 const mapStateToProps = state => {
   return {
-    currentUser: state.user.currentUser
+    currentUser: state.user.currentUser,
+    hidden: state.cart.hidden
   };
 };
 
