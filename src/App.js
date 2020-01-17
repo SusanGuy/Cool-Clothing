@@ -12,7 +12,7 @@ import { setCurrentUser } from "./redux/user/user.actions";
 import { createStructuredSelector } from "reselect";
 import { selectCurrentUser, selectLoading } from "./redux/user/user.selector";
 import Auth from "./containers/authenticationForm/auth";
-import PrivateRoute from "./components/routing/PrivateRoute";
+//import PrivateRoute from "./components/routing/PrivateRoute";
 
 class App extends React.Component {
   unsubscribeFromAuth = null;
@@ -48,7 +48,7 @@ class App extends React.Component {
             <Switch>
               <Route exact path="/" component={HomePage} />
               <Route path="/shop" component={Shop} />
-              <PrivateRoute exact path="/checkout" component={Checkout} />
+              <Route exact path="/checkout" component={Checkout} />
               <Route
                 exact
                 path="/auth"

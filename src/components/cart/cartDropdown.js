@@ -1,14 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-
 import Button from "../buttons/buttons";
 import CartItem from "../cart-item/cart-item";
 import { selectCartItems } from "../../redux/cart/cart.selectors";
-import { selectCurrentUser } from "../../redux/user/user.selector";
 import { withRouter } from "react-router-dom";
 import { toggleCart } from "../../redux/cart/cart.actions";
 import "./cartDropDown.styles.scss";
-const cartDropdown = ({ cartItems, history, toggleCart, currentUser }) => {
+const cartDropdown = ({ cartItems, history, toggleCart }) => {
   let cartItem;
   if (cartItems.length > 0) {
     cartItem = cartItems.map(cartItem => {
@@ -22,25 +20,19 @@ const cartDropdown = ({ cartItems, history, toggleCart, currentUser }) => {
 
   const handleCheckout = () => {
     toggleCart();
-    if (!currentUser) {
-      return history.push("/auth");
-    }
     history.push("/checkout");
   };
   return (
     <div className="cart-dropdown">
       <div className="cart-items">{cartItem}</div>
-      <Button onClick={() => handleCheckout()}>
-        {currentUser ? "GO TO CHECKOUT" : "SIGN IN TO CHECKOUT"}
-      </Button>
+      <Button onClick={() => handleCheckout()}>GO TO CHECKOUT</Button>
     </div>
   );
 };
 
 const mapStateToProps = state => {
   return {
-    cartItems: selectCartItems(state),
-    currentUser: selectCurrentUser(state)
+    cartItems: selectCartItems(state)
   };
 };
 
