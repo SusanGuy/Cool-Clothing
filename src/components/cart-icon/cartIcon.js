@@ -2,6 +2,7 @@ import React from "react";
 import { ReactComponent as ShoppingIcon } from "../../assets/shopping-bag.svg";
 import { toggleCart } from "../../redux/cart/cart.actions";
 import { connect } from "react-redux";
+import { selectCartItemsCount } from "../../redux/cart/cart.selectors";
 import "./cartIcon.styles.scss";
 const cartIcon = ({ toggleCart, count }) => {
   return (
@@ -11,9 +12,9 @@ const cartIcon = ({ toggleCart, count }) => {
     </div>
   );
 };
-const mapStateToProps = ({ cart: { cartItems } }) => {
+const mapStateToProps = state => {
   return {
-    count: cartItems.length
+    count: selectCartItemsCount(state)
   };
 };
 

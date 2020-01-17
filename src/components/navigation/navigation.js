@@ -5,6 +5,9 @@ import { auth } from "../../firebase/firebase.utils";
 import { ReactComponent as Logo } from "../../assets/crown.svg";
 import ShoppingIcon from "../cart-icon/cartIcon";
 import CartDropDown from "../cart/cartDropdown";
+import { createStructuredSelector } from "reselect";
+import { selectCartHidden } from "../../redux/cart/cart.selectors";
+import { selectCurrentUser } from "../../redux/user/user.selector";
 
 import "./navigation.scss";
 const navigation = ({ currentUser, hidden, toggleCart }) => {
@@ -37,11 +40,9 @@ const navigation = ({ currentUser, hidden, toggleCart }) => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    currentUser: state.user.currentUser,
-    hidden: state.cart.hidden
-  };
-};
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+  hidden: selectCartHidden
+});
 
 export default connect(mapStateToProps)(navigation);
