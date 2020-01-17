@@ -38,6 +38,30 @@ const cartReducer = (state = initialState, action) => {
         ...state,
         cartItems: sahiArray
       };
+
+    case cartActions.REMOVE_ITEM:
+      return {
+        ...state,
+        cartItems: state.cartItems.filter(item => {
+          return item !== payload;
+        })
+      };
+
+    case cartActions.DECREASE_ITEM:
+      const mamaArray = state.cartItems.map(cartItem => {
+        if (cartItem === payload) {
+          return {
+            ...cartItem,
+            quantity: cartItem.quantity - 1
+          };
+        } else {
+          return cartItem;
+        }
+      });
+      return {
+        ...state,
+        cartItems: mamaArray
+      };
     default:
       return state;
   }
