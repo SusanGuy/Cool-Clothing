@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import StripeCheckoutButton from "../../components/stripe-button/stripeButton.js";
@@ -32,18 +32,26 @@ class Checkout extends Component {
             <span>Remove</span>
           </div>
         </div>
-        {cartItems.map(cartItem => {
-          return <CheckoutItem key={cartItem.name} cartItem={cartItem} />;
-        })}
+        {cartItems.length !== 0 ? (
+          cartItems.map(cartItem => {
+            return <CheckoutItem key={cartItem.name} cartItem={cartItem} />;
+          })
+        ) : (
+          <div className="message">There are no items in your cart....</div>
+        )}
         <div className="total">
           <span>TOTAL: ${total}</span>
         </div>
-        <div className="test-warning">
-          *Please use the following test credit card for payments*
-          <br />
-          4242 4242 4242 4242 - Exp: 01/20 CVV: 123
-        </div>
-        <StripeCheckoutButton price={total} />
+        {cartItems.length > 0 && (
+          <Fragment>
+            <div className="test-warning">
+              *Please use the following test credit card for payments*
+              <br />
+              4242 4242 4242 4242 - Exp: 01/20 CVV: 123
+            </div>
+            <StripeCheckoutButton price={total} />
+          </Fragment>
+        )}
       </div>
     );
   }

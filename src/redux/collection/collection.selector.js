@@ -5,7 +5,7 @@ const COLLECTION_ID_MAP = {
   sneakers: 2,
   jackets: 3,
   womens: 4,
-  men: 5
+  mens: 5
 };
 
 const selectCollection = state => state.collection;
