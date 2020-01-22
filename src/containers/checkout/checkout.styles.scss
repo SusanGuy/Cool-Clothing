@@ -29,10 +29,18 @@
     font-size: 36px;
   }
 
-  .total {
+  .display-options {
+    display: flex;
+    flex-direction: row;
+    font-size: 36px;
+    align-items: center;
     margin-top: 30px;
     margin-left: auto;
-    font-size: 36px;
+    justify-content: center;
+
+    .clear-button {
+      margin-right: 400px;
+    }
   }
 
   button {
