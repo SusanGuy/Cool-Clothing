@@ -1,22 +1,20 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import FormInput from "../formInput/formInput";
 import Button from "../buttons/buttons";
 import { auth, createUserProfileDocument } from "../../firebase/firebase.utils";
 import "./signup.styles.scss";
-class Signup extends Component {
-  state = {
-    displayName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    error: null
-  };
+const Signup = () => {
+  const [displayName, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState(null);
 
-  handleSubmit = async e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    const { displayName, email, password, confirmPassword } = this.state;
+
     if (password !== confirmPassword) {
-      this.setState({ error: "passwords don't match" });
+      setError("passwords don't match");
       return;
     }
     try {
@@ -25,73 +23,82 @@ class Signup extends Component {
         password
       );
       await createUserProfileDocument(user, { displayName });
-      this.setState({
-        displayName: "",
-        email: "",
-        password: "",
-        confirmPassword: ""
-      });
+      setName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
     } catch (err) {
-      this.setState({ error: err.message });
+      setError(err.message);
     }
   };
 
-  handleChange = e => {
+  const handleChange = e => {
     this.setState({
       error: null
     });
-    this.setState({
-      [e.target.name]: e.target.value
-    });
+    switch (e.target.name) {
+      case "displayName":
+        setName(e.target.value);
+        break;
+      case "email":
+        setEmail(e.target.value);
+        break;
+      case "password":
+        setPassword(e.target.value);
+        break;
+      case "confirmPassword":
+        setConfirmPassword(e.target.value);
+        break;
+      default:
+        break;
+    }
   };
 
-  render() {
-    return (
-      <div className="sign-up">
-        <h2 className="title">I donot have an account</h2>
-        <span>Sign up with your email and password</span>
-        <form onSubmit={this.handleSubmit}>
-          <FormInput
-            name="displayName"
-            type="text"
-            handleChange={e => this.handleChange(e)}
-            value={this.state.displayName}
-            label="Name"
-            required
-          />
+  return (
+    <div className="sign-up">
+      <h2 className="title">I donot have an account</h2>
+      <span>Sign up with your email and password</span>
+      <form onSubmit={handleSubmit}>
+        <FormInput
+          name="displayName"
+          type="text"
+          handleChange={e => handleChange(e)}
+          value={displayName}
+          label="Name"
+          required
+        />
 
-          <FormInput
-            name="email"
-            type="email"
-            handleChange={e => this.handleChange(e)}
-            value={this.state.email}
-            label="Email"
-            required
-          />
+        <FormInput
+          name="email"
+          type="email"
+          handleChange={e => handleChange(e)}
+          value={email}
+          label="Email"
+          required
+        />
 
-          <FormInput
-            name="password"
-            type="password"
-            value={this.state.password}
-            handleChange={e => this.handleChange(e)}
-            label="Password"
-            required
-          />
+        <FormInput
+          name="password"
+          type="password"
+          value={password}
+          handleChange={e => handleChange(e)}
+          label="Password"
+          required
+        />
 
-          <FormInput
-            name="confirmPassword"
-            type="password"
-            value={this.state.confirmPassword}
-            handleChange={e => this.handleChange(e)}
-            label="Confirm Password"
-            required
-          />
-          {this.state.error && <div className="error">{this.state.error}</div>}
-          <Button type="submit"> Sign Up </Button>
-        </form>
-      </div>
-    );
-  }
-}
+        <FormInput
+          name="confirmPassword"
+          type="password"
+          value={confirmPassword}
+          handleChange={e => handleChange(e)}
+          label="Confirm Password"
+          required
+        />
+        {error && <div className="error">{error}</div>}
+        <Button type="submit"> Sign Up </Button>
+      </form>
+    </div>
+  );
+};
 
 export default Signup;
